@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Assignment3_Rupinder_singh</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+#floating-panel {
+  position: absolute;
+  top: 60px;
+  left: 1%;
+  z-index: 5;
+  background-color:blue;
+  padding: 5px;
+  border: 1px solid #999;
+  text-align: center;
+  font-family: 'Constantia';
+  line-height: 30px;
+  padding-left: 10px;
+}
+
+    </style>
+  </head>
+  <body>
+    <div id="floating-panel">
+      <input id="address" type="text" value="66 yuile court, Brampton">
+      <input id="submit" type="button" value="Enter the Address">
+    </div>
+    <div id="map"></div>
+    <script>
+function initMap() {
+   var myLatLng = {lat:	43.645025, lng: -79.740262};
+    var map = new google.maps.Map(document.getElementById('map'),
+    {
+    zoom: 8,
+    center: myLatLng
+    }
+            );
+   
+     var marker = new google.maps.Marker(
+             {
+     map: map,    
+     position: myLatLng
+              
+            }
+                    );
+  
+  
+  var geocoder = new google.maps.Geocoder();
+
+  document.getElementById('submit').addEventListener('click', function() {
+    geocodeAddress(geocoder, map);
+  }
+          );
+}
+
+function geocodeAddress(geocoder, resultsMap) {
+  var address = document.getElementById('address').value;
+  
+  geocoder.geocode({'address': address}, function(results, status) {
+      
+    if (status === google.maps.GeocoderStatus.OK) {
+        resultsMap.setCenter(results[0].geometry.location);
+        
+      var marker = new google.maps.Marker(
+              {
+                  map: resultsMap,
+          position: results[0].geometry.location,
+          animation:google.maps.Animation.DROP
+                    
+        
+       
+      }
+              );
+    } else {
+      alert('Address entered is invalid ' + status );
+    }
+  }
+          );
+}
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzEzw2_GbR1ZWvaeIyoI3ph3_J84fXT-4&signed_in=true&callback=initMap"
+        async defer></script>
+  </body>
+</html>
